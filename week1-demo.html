@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand — eCommerce | Week 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* ============================================================
+       CSS VARIABLES
+    ============================================================ */
+    :root {
+      --blue:       #0d6efd;
+      --blue-dark:  #0b5ed7;
+      --blue-light: #e8f1ff;
+      --orange:     #ff7043;
+      --orange-dark:#e64a19;
+      --green:      #00b517;
+      --red:        #fa3434;
+      --text:       #1c1c1c;
+      --text-2:     #505050;
+      --muted:      #8b96a5;
+      --border:     #e0e0e0;
+      --bg-light:   #f7fafc;
+      --bg-gray:    #f5f5f5;
+      --white:      #ffffff;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.08);
+      --shadow-md:  0 4px 16px rgba(0,0,0,0.10);
+      --radius:     6px;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      font-size: 14px; color: var(--text);
+      background: #fff; line-height: 1.5;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ============================================================
+       HEADER — TOP BAR
+    ============================================================ */
+    .header-topbar {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+    }
+    .header-topbar .container {
+      display: flex; align-items: center; gap: 16px;
+    }
+
+    /* Logo */
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 20px; color: var(--blue);
+      min-width: 110px; flex-shrink: 0;
+    }
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: var(--blue); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 16px;
+    }
+
+    /* Search */
+    .search-wrap {
+      flex: 1; max-width: 520px;
+      display: flex;
+      border: 1.5px solid var(--blue);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .search-wrap input {
+      flex: 1; border: none; outline: none;
+      padding: 9px 14px; font-size: 14px; color: var(--text);
+    }
+    .search-cat {
+      border: none; border-left: 1px solid var(--border);
+      background: var(--bg-gray);
+      padding: 0 12px; font-size: 13px; color: var(--text-2);
+      outline: none; cursor: pointer; white-space: nowrap;
+    }
+    .search-btn {
+      background: var(--blue); border: none;
+      padding: 0 22px; color: #fff; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 6px;
+      cursor: pointer; transition: background 0.18s;
+    }
+    .search-btn:hover { background: var(--blue-dark); }
+
+    /* Actions */
+    .header-actions {
+      display: flex; align-items: center; gap: 22px;
+      margin-left: auto; flex-shrink: 0;
+    }
+    .action-link {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 2px; color: var(--text); font-size: 11px;
+      position: relative; cursor: pointer; text-decoration: none;
+    }
+    .action-link i { font-size: 20px; color: #555; }
+    .action-link > span:not(.cart-badge) { color: var(--muted); }
+    .cart-badge {
+      position: absolute; top: -4px; right: -8px;
+      background: var(--orange); color: #fff;
+      font-size: 10px; border-radius: 50%;
+      width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ============================================================
+       MAIN NAV
+    ============================================================ */
+    .main-nav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .main-nav .container {
+      display: flex; align-items: stretch;
+    }
+
+    /* All category */
+    .all-cat-wrap { position: relative; }
+    .all-cat-btn {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--blue); color: #fff;
+      padding: 0 18px; height: 44px;
+      font-size: 14px; font-weight: 500;
+      border: none; white-space: nowrap; cursor: pointer;
+      transition: background 0.18s;
+    }
+    .all-cat-btn:hover { background: var(--blue-dark); }
+
+    .cat-dropdown {
+      display: none;
+      position: absolute; top: 100%; left: 0;
+      width: 224px; background: #fff;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+      z-index: 1000;
+    }
+    .all-cat-wrap:hover .cat-dropdown { display: block; }
+    .cat-dropdown li a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; font-size: 13.5px; color: var(--text);
+      transition: background 0.15s, color 0.15s;
+    }
+    .cat-dropdown li a:hover { background: var(--bg-light); color: var(--blue); }
+    .cat-dropdown li a i { color: var(--blue); width: 16px; text-align: center; }
+    .cat-dropdown .see-all a { color: var(--blue); font-weight: 600; }
+    .cat-dropdown li { border-bottom: 1px solid #f0f0f0; }
+    .cat-dropdown li:last-child { border-bottom: none; }
+
+    /* Nav links */
+    .nav-links {
+      display: flex; align-items: center;
+    }
+    .nav-links a {
+      display: flex; align-items: center; gap: 4px;
+      padding: 0 15px; height: 44px;
+      font-size: 13.5px; color: var(--text);
+      white-space: nowrap; transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    .has-drop { position: relative; }
+    .sub-drop {
+      display: none; position: absolute; top: 100%; left: 0;
+      min-width: 160px; background: #fff;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 1000;
+    }
+    .has-drop:hover .sub-drop { display: block; }
+    .sub-drop li a {
+      display: block; padding: 9px 14px;
+      font-size: 13px; color: var(--text); height: auto;
+    }
+    .sub-drop li a:hover { background: var(--bg-light); color: var(--blue); }
+
+    /* Nav right */
+    .nav-right {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .lang-select {
+      border: none; outline: none;
+      font-size: 13px; color: var(--text);
+      background: transparent; cursor: pointer;
+    }
+    .ship-to {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 13px; cursor: pointer;
+    }
+    .ship-to img { width: 22px; height: 15px; object-fit: cover; border-radius: 2px; }
+
+    /* ============================================================
+       PLACEHOLDER (main content area)
+    ============================================================ */
+    .week1-placeholder {
+      min-height: 400px;
+      background: linear-gradient(135deg, #eef5ff 0%, #dbeeff 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; text-align: center; padding: 60px 16px;
+    }
+    .week1-placeholder i { font-size: 52px; color: var(--blue); opacity: 0.30; }
+    .week1-placeholder h2 { font-size: 24px; font-weight: 700; color: var(--blue); }
+    .week1-placeholder p { font-size: 14px; color: var(--muted); max-width: 400px; }
+    .week-tag {
+      background: var(--blue); color: #fff;
+      font-size: 13px; font-weight: 500;
+      padding: 6px 20px; border-radius: 20px; margin-top: 8px;
+    }
+    .pages-list {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; justify-content: center;
+    }
+    .page-chip {
+      background: #fff; border: 1.5px solid var(--blue);
+      color: var(--blue); font-size: 13px; font-weight: 500;
+      padding: 6px 16px; border-radius: 20px;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: #fff;
+      border-top: 1px solid var(--border);
+      margin-top: 0;
+    }
+
+    /* Newsletter */
+    .newsletter-strip {
+      background: var(--blue); padding: 26px 0; text-align: center;
+    }
+    .newsletter-strip h3 {
+      color: #fff; font-size: 18px; font-weight: 600; margin-bottom: 4px;
+    }
+    .newsletter-strip p {
+      color: rgba(255,255,255,0.80); font-size: 13px; margin-bottom: 14px;
+    }
+    .newsletter-form {
+      display: inline-flex; border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .newsletter-form input {
+      border: none; outline: none;
+      padding: 11px 20px; font-size: 14px; width: 280px;
+    }
+    .newsletter-form button {
+      background: var(--orange); color: #fff; border: none;
+      padding: 11px 26px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.18s;
+    }
+    .newsletter-form button:hover { background: var(--orange-dark); }
+
+    /* Footer grid */
+    .footer-grid {
+      max-width: 1200px; margin: 0 auto;
+      padding: 36px 16px 28px;
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr 1fr;
+      gap: 28px;
+    }
+    .footer-brand .logo { margin-bottom: 12px; }
+    .footer-brand p {
+      font-size: 13px; color: var(--muted); line-height: 1.75;
+      margin-bottom: 16px; max-width: 220px;
+    }
+    .social-icons { display: flex; gap: 8px; }
+    .social-icons a {
+      width: 32px; height: 32px;
+      background: var(--bg-light); border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 13px;
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+    }
+    .social-icons a:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    .footer-col h4 {
+      font-size: 14px; font-weight: 700;
+      color: var(--text); margin-bottom: 14px;
+    }
+    .footer-col ul li { margin-bottom: 9px; }
+    .footer-col ul li a {
+      font-size: 13px; color: var(--muted); transition: color 0.15s;
+    }
+    .footer-col ul li a:hover { color: var(--blue); }
+
+    /* Footer bottom */
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding: 14px 16px;
+    }
+    .footer-bottom .inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .footer-bottom p { font-size: 12.5px; color: var(--muted); }
+    .app-badges { display: flex; gap: 10px; }
+    .app-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: #111; color: #fff;
+      border-radius: 8px; padding: 7px 14px;
+      font-size: 12px; text-decoration: none;
+      transition: background 0.18s;
+    }
+    .app-badge:hover { background: #333; }
+    .app-badge i { font-size: 20px; }
+    .app-badge div { line-height: 1.3; }
+    .app-badge div small { font-size: 10px; opacity: 0.7; display: block; }
+    .app-badge div strong { font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<!-- ==========================================
+     HEADER
+=========================================== -->
+<header>
+  <!-- Top Bar -->
+  <div class="header-topbar">
+    <div class="container">
+
+      <!-- Logo -->
+      <a href="index.html" class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-store"></i></div>
+        Brand
+      </a>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search" autocomplete="off" />
+        <select class="search-cat">
+          <option>All category</option>
+          <option>Automobiles</option>
+          <option>Clothes and wear</option>
+          <option>Electronics</option>
+          <option>Home interiors</option>
+          <option>Computer and tech</option>
+          <option>Sports and outdoor</option>
+        </select>
+        <button class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+      </div>
+
+      <!-- Action icons -->
+      <div class="header-actions">
+        <a href="#" class="action-link">
+          <i class="fa-regular fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="#" class="action-link">
+          <i class="fa-regular fa-message"></i>
+          <span>Message</span>
+        </a>
+        <a href="#" class="action-link">
+          <i class="fa-solid fa-box"></i>
+          <span>Orders</span>
+        </a>
+        <a href="cart.html" class="action-link">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-badge">0</span>
+          <span>My cart</span>
+        </a>
+      </div>
+
+    </div>
+  </div><!-- /header-topbar -->
+
+  <!-- Main Nav -->
+  <nav class="main-nav">
+    <div class="container">
+
+      <!-- All category dropdown -->
+      <div class="all-cat-wrap">
+        <button class="all-cat-btn">
+          <i class="fa-solid fa-bars"></i>
+          All category
+          <i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:2px;"></i>
+        </button>
+        <ul class="cat-dropdown">
+          <li><a href="#"><i class="fa-solid fa-car"></i>Automobiles</a></li>
+          <li><a href="#"><i class="fa-solid fa-shirt"></i>Clothes and wear</a></li>
+          <li><a href="#"><i class="fa-solid fa-couch"></i>Home interiors</a></li>
+          <li><a href="#"><i class="fa-solid fa-computer"></i>Computer and tech</a></li>
+          <li><a href="#"><i class="fa-solid fa-wrench"></i>Tools, equipments</a></li>
+          <li><a href="#"><i class="fa-solid fa-person-running"></i>Sports and outdoor</a></li>
+          <li><a href="#"><i class="fa-solid fa-paw"></i>Animal and pets</a></li>
+          <li><a href="#"><i class="fa-solid fa-gears"></i>Machinery tools</a></li>
+          <li class="see-all"><a href="#"><i class="fa-solid fa-grip"></i>More category</a></li>
+        </ul>
+      </div>
+
+      <!-- Nav links -->
+      <div class="nav-links">
+        <a href="#">Hot offers</a>
+        <a href="#">Gift boxes</a>
+        <a href="#">Projects</a>
+        <a href="#">Menu item</a>
+        <a href="#" class="has-drop">
+          Help <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+          <ul class="sub-drop">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Returns & Refunds</a></li>
+            <li><a href="#">Shipping Info</a></li>
+          </ul>
+        </a>
+      </div>
+
+      <!-- Language + Ship to -->
+      <div class="nav-right">
+        <select class="lang-select">
+          <option>English, USD</option>
+          <option>Arabic, AED</option>
+          <option>French, EUR</option>
+          <option>German, EUR</option>
+        </select>
+        <div class="ship-to">
+          <span>🇩🇪</span>
+          <span>Ship to</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+</header>
+
+<!-- ==========================================
+     MAIN — PLACEHOLDER
+=========================================== -->
+<main>
+  <div class="week1-placeholder">
+    <i class="fa-solid fa-store"></i>
+    <h2>eCommerce Website — Week 1 Complete ✅</h2>
+    <p>Header &amp; Footer are fully built and match the Figma design. Home page content, product listings, and detail pages will be added in Weeks 2 &amp; 3.</p>
+    <span class="week-tag">Week 1 Deliverable — Header &amp; Footer</span>
+    <div class="pages-list">
+      <span class="page-chip">📄 index.html — Home</span>
+      <span class="page-chip">📋 listview.html — Product List</span>
+      <span class="page-chip">🔲 gridview.html — Grid View</span>
+      <span class="page-chip">📦 detail.html — Product Detail</span>
+      <span class="page-chip">🛒 cart.html — Cart</span>
+    </div>
+  </div>
+</main>
+
+<!-- ==========================================
+     FOOTER
+=========================================== -->
+<footer>
+
+  <!-- Newsletter -->
+  <div class="newsletter-strip">
+    <div class="container">
+      <h3>Subscribe on our newsletter</h3>
+      <p>Get daily news on upcoming offers from many suppliers all over the world</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Email" />
+        <button>Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columns -->
+  <div class="footer-grid">
+
+    <!-- Brand -->
+    <div class="footer-brand footer-col">
+      <a href="index.html" class="logo">
+        <div class="logo-icon"><i class="fa-solid fa-store"></i></div>
+        Brand
+      </a>
+      <p>Best information about the company goes here but now lorem ipsum is available.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="footer-col">
+      <h4>About</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Find store</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">Blogs</a></li>
+      </ul>
+    </div>
+
+    <!-- Partnership -->
+    <div class="footer-col">
+      <h4>Partnership</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Find store</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">Blogs</a></li>
+      </ul>
+    </div>
+
+    <!-- Information -->
+    <div class="footer-col">
+      <h4>Information</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Money Refund</a></li>
+        <li><a href="#">Shipping</a></li>
+        <li><a href="#">Contact us</a></li>
+      </ul>
+    </div>
+
+    <!-- For users -->
+    <div class="footer-col">
+      <h4>For users</h4>
+      <ul>
+        <li><a href="#">Login</a></li>
+        <li><a href="#">Register</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">My Orders</a></li>
+      </ul>
+    </div>
+
+  </div><!-- /footer-grid -->
+
+  <!-- Bottom bar -->
+  <div class="footer-bottom">
+    <div class="inner">
+      <p>© 2023 Ecommerce.</p>
+      <div class="app-badges">
+        <a href="#" class="app-badge">
+          <i class="fa-brands fa-apple"></i>
+          <div>
+            <small>Download on the</small>
+            <strong>App Store</strong>
+          </div>
+        </a>
+        <a href="#" class="app-badge">
+          <i class="fa-brands fa-google-play"></i>
+          <div>
+            <small>Get it on</small>
+            <strong>Google Play</strong>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</footer>
+
+</body>
+</html>
